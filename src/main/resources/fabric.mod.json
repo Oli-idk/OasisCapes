@@ -14,9 +14,6 @@
   "entrypoints": {
     "client": [
       "me.akiradev.oasiscapes.client.OasiscapesClient"
-    ],
-    "main": [
-      "me.akiradev.oasiscapes.Oasiscapes"
     ]
   },
   "mixins": [
