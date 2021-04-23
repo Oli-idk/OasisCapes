@@ -12,8 +12,8 @@ import java.io.InputStream;
 import java.util.*;
 
 public class Capes {
-    private static final String CAPE_OWNERS_URL = "https://oli-idk.github.io/test/api/capeowners.txt";
-    private static final String CAPES_URL = "https://oli-idk.github.io/test/api/capes.txt";
+    private static final String CAPE_OWNERS_URL = "http://96.44.143.163:27020/api/capeowners.txt";
+    private static final String CAPES_URL = "http://96.44.143.163:27020/api/capes.txt";
 
     private static final Map<UUID, String> OWNERS = new HashMap<>();
     private static final Map<String, String> URLS = new HashMap<>();
@@ -42,6 +42,12 @@ public class Capes {
                 if (!URLS.containsKey(split[0])) URLS.put(split[0], split[1]);
             }
         }));
+    }
+
+    public static void reload() {
+        TEXTURES.clear();
+        URLS.clear();
+        Capes.init();
     }
 
     public static Identifier getCape(PlayerEntity player) {
