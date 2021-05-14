@@ -32,20 +32,7 @@ public class HttpUtils {
         return null;
     }
 
-    public static void getLines(String url, Consumer<String> callback) {
-        try {
-            InputStream in = get(url);
-            if (in == null) return;
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            String line;
-            while ((line = reader.readLine()) != null) callback.accept(line);
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    
     public static <T> T get(String url, Type type) {
         try {
             InputStream in = get(url);
@@ -61,5 +48,19 @@ public class HttpUtils {
         }
 
         return null;
+    }
+    
+    public static void getLines(String url, Consumer<String> callback) {
+        try {
+            InputStream in = get(url);
+            if (in == null) return;
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            while ((line = reader.readLine()) != null) callback.accept(line);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
