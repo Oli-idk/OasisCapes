@@ -1,4 +1,4 @@
-package me.akiradev.oasiscapes.events;
+package xyz.akiradev.oasiscosmetics.events;
 
 public class GameLeftEvent {
     private static final GameLeftEvent INSTANCE = new GameLeftEvent();

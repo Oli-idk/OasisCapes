@@ -1,25 +1,18 @@
-package me.akiradev.oasiscapes.client;
+package xyz.akiradev.oasiscosmetics.client;
 
-import me.akiradev.oasiscapes.Utils.HttpUtils;
-import me.akiradev.oasiscapes.events.GameJoinedEvent;
-import me.akiradev.oasiscapes.events.GameLeftEvent;
 import me.zero.alpine.bus.EventBus;
 import me.zero.alpine.bus.EventManager;
-import me.zero.alpine.event.EventPriority;
-import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listenable;
-import me.akiradev.oasiscapes.Utils.Capes;
-import me.akiradev.oasiscapes.Utils.Executor;
+import xyz.akiradev.oasiscosmetics.client.render.Capes;
+import xyz.akiradev.oasiscosmetics.Utils.Executor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.MessageType;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import java.util.UUID;
 
-public class OasiscapesClient implements ClientModInitializer, Listenable {
-    public static OasiscapesClient INSTANCE;
+import java.io.IOException;
+
+public class OasisCosmeticsClient implements ClientModInitializer, Listenable {
+    public static final String MOD_ID = "oasis-capes";
+    public static OasisCosmeticsClient INSTANCE;
     public static final EventBus EVENT_BUS = new EventManager();
     private static int tick;
     @Override
@@ -28,7 +21,11 @@ public class OasiscapesClient implements ClientModInitializer, Listenable {
         System.out.println("Initializing Oasis Capes.");
 
         Executor.init();
-        Capes.init();
+        try {
+            Capes.init();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         EVENT_BUS.subscribe(this);
         ClientTickEvents.START_CLIENT_TICK.register((player) -> {

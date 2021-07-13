@@ -1,9 +1,7 @@
-package me.akiradev.oasiscapes.mixin;
+package xyz.akiradev.oasiscosmetics.mixin;
 
-import me.akiradev.oasiscapes.Utils.HttpUtils;
-import me.akiradev.oasiscapes.client.OasiscapesClient;
-import me.akiradev.oasiscapes.events.GameJoinedEvent;
-import me.akiradev.oasiscapes.events.GameLeftEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import xyz.akiradev.oasiscosmetics.Utils.HttpUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.world.ClientWorld;
@@ -35,9 +33,9 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Inject(at = @At("TAIL"), method = "onGameJoin")
     private void onGameJoinTail(GameJoinS2CPacket packet, CallbackInfo info) {
-        HttpUtils.getLines("http://96.44.143.163:27020/api/version.txt", s -> {
+        HttpUtils.getLines("http://135.181.141.7:40015/api/version.txt", s -> {
             if (!s.equals(version)){
-                MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.CHAT, Text.of("§b[OC] §cA new update for Oasis Capes is available!"), UUID.randomUUID());
+                MinecraftClient.getInstance().inGameHud.addChatMessage(MessageType.CHAT, Text.of("§b[OasisCosmetics] §cA new update for Oasis Cosmetics is available!"), UUID.randomUUID());
             }
         });
     }

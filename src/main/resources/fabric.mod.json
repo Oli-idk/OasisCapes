@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "oasiscapes",
+  "id": "oasiscosmetics",
   "version": "${version}",
-  "name": "OasisCapes",
-  "description": "Olis Custom Capes",
+  "name": "OasisCosmetics",
+  "description": "Olis Custom Cosmetics mod",
   "authors": [
     "AkiraDev"
   ],
@@ -13,15 +13,15 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "me.akiradev.oasiscapes.client.OasiscapesClient"
+      "xyz.akiradev.oasiscosmetics.client.OasisCosmeticsClient"
     ]
   },
   "mixins": [
-    "oasiscapes.mixins.json"
+    "oasiscosmetics.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.3",
+    "fabricloader": ">=0.11.6",
     "fabric": "*",
-    "minecraft": "1.16.4"
+    "minecraft": "1.17.1"
   }
 }

@@ -1,4 +1,4 @@
-package me.akiradev.oasiscapes.Utils;
+package xyz.akiradev.oasiscosmetics.Utils;
 
 import com.google.gson.Gson;
 

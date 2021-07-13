@@ -1,4 +1,4 @@
-package me.akiradev.oasiscapes.events;
+package xyz.akiradev.oasiscosmetics.events;
 
 public class GameJoinedEvent {
     private static final GameJoinedEvent INSTANCE = new GameJoinedEvent();

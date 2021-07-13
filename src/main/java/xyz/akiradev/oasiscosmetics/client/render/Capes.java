@@ -1,19 +1,25 @@
-package me.akiradev.oasiscapes.Utils;
+package xyz.akiradev.oasiscosmetics.client.render;
 
-import me.akiradev.oasiscapes.Utils.HttpUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import xyz.akiradev.oasiscosmetics.Utils.Executor;
+import xyz.akiradev.oasiscosmetics.Utils.HttpUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.*;
 
 public class Capes {
-    private static final String CAPE_OWNERS_URL = "http://96.44.143.163:27020/api/capeowners.txt";
-    private static final String CAPES_URL = "http://96.44.143.163:27020/api/capes.txt";
+    private static final String CAPE_OWNERS_URL = "http://135.181.141.7:40015/api/capeowners.json";
+    private static final String CAPES_URL = "http://135.181.141.7:40015/api/capes.json";
 
     private static final Map<UUID, String> OWNERS = new HashMap<>();
     private static final Map<String, String> URLS = new HashMap<>();
@@ -22,34 +28,25 @@ public class Capes {
     private static final List<Cape> TO_REGISTER = new ArrayList<>();
     private static final List<Cape> TO_RETRY = new ArrayList<>();
     private static final List<Cape> TO_REMOVE = new ArrayList<>();
-
-    public static void init() {
+    public static void init() throws IOException {
         // Cape owners
-        Executor.execute(() -> HttpUtils.getLines(CAPE_OWNERS_URL, s -> {
-            String[] split = s.split(" ");
 
-            if (split.length >= 2) {
-                OWNERS.put(UUID.fromString(split[0]), split[1]);
-                if (!TEXTURES.containsKey(split[1])) TEXTURES.put(split[1], new Cape(split[1]));
-            }
-        }));
+        List<Map<String, String>> capeOwners = new Gson().<Map<String, List<Map<String, String>>>>fromJson(new BufferedReader(new InputStreamReader(new URL(CAPE_OWNERS_URL).openStream())), new TypeToken<Map<String, List<Map<String, String>>>>() {}.getType()).get("CapeOwners");
+            capeOwners.forEach(s -> OWNERS.put(UUID.fromString(s.get("UUID")), s.get("CAPE")));
+            capeOwners.forEach(s -> {if (!TEXTURES.containsKey(s.get("CAPE"))) TEXTURES.put(s.get("CAPE"), new Cape(s.get("CAPE")));});
+
+
 
         // Capes
-        Executor.execute(() -> HttpUtils.getLines(CAPES_URL, s -> {
-            String[] split = s.split(" ");
-
-            if (split.length >= 2) {
-                if (!URLS.containsKey(split[0])) URLS.put(split[0], split[1]);
-            }
-        }));
+        List<Map<String, String>> capes = new Gson().<Map<String, List<Map<String, String>>>>fromJson(new BufferedReader(new InputStreamReader(new URL(CAPES_URL).openStream())), new TypeToken<Map<String, List<Map<String, String>>>>() {}.getType()).get("Capes");
+        capes.forEach(s -> {if (!URLS.containsKey(s.get("CapeName"))) URLS.put(s.get("CapeName"), s.get("CapeURL"));});
     }
 
-    public static void reload() {
+    public static void reload() throws IOException {
         TEXTURES.clear();
         URLS.clear();
         Capes.init();
     }
-
     public static Identifier getCape(PlayerEntity player) {
         String capeName = OWNERS.get(player.getUuid());
         if (capeName != null) {
@@ -98,7 +95,7 @@ public class Capes {
         private int retryTimer;
 
         public Cape(String name) {
-            super("meteor-client", "capes/" + name);
+            super("oasis-capes", "capes/" + name);
 
             this.name = name;
         }

@@ -1,4 +1,4 @@
-package me.akiradev.oasiscapes.Utils;
+package xyz.akiradev.oasiscosmetics.Utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
