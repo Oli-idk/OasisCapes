@@ -3,7 +3,7 @@ package xyz.akiradev.oasiscosmetics.client;
 import me.zero.alpine.bus.EventBus;
 import me.zero.alpine.bus.EventManager;
 import me.zero.alpine.listener.Listenable;
-import xyz.akiradev.oasiscosmetics.client.render.Capes;
+import xyz.akiradev.oasiscosmetics.Utils.Capes;
 import xyz.akiradev.oasiscosmetics.Utils.Executor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

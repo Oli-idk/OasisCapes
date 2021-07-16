@@ -1,25 +1,23 @@
-package xyz.akiradev.oasiscosmetics.client.render;
+package xyz.akiradev.oasiscosmetics.Utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import xyz.akiradev.oasiscosmetics.Utils.Executor;
-import xyz.akiradev.oasiscosmetics.Utils.HttpUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
 public class Capes {
-    private static final String CAPE_OWNERS_URL = "http://135.181.141.7:40015/api/capeowners.json";
-    private static final String CAPES_URL = "http://135.181.141.7:40015/api/capes.json";
+    private static final String CAPE_OWNERS_URL = "http://135.181.141.7:40015/api/v1/capeowners.json";
+    private static final String CAPES_URL = "http://135.181.141.7:40015/api/v1/capes.json";
 
     private static final Map<UUID, String> OWNERS = new HashMap<>();
     private static final Map<String, String> URLS = new HashMap<>();
@@ -28,12 +26,34 @@ public class Capes {
     private static final List<Cape> TO_REGISTER = new ArrayList<>();
     private static final List<Cape> TO_RETRY = new ArrayList<>();
     private static final List<Cape> TO_REMOVE = new ArrayList<>();
+
+
+
     public static void init() throws IOException {
         // Cape owners
 
-        List<Map<String, String>> capeOwners = new Gson().<Map<String, List<Map<String, String>>>>fromJson(new BufferedReader(new InputStreamReader(new URL(CAPE_OWNERS_URL).openStream())), new TypeToken<Map<String, List<Map<String, String>>>>() {}.getType()).get("CapeOwners");
-            capeOwners.forEach(s -> OWNERS.put(UUID.fromString(s.get("UUID")), s.get("CAPE")));
-            capeOwners.forEach(s -> {if (!TEXTURES.containsKey(s.get("CAPE"))) TEXTURES.put(s.get("CAPE"), new Cape(s.get("CAPE")));});
+
+        try (Reader inputReader = new BufferedReader(new InputStreamReader(new URL(CAPE_OWNERS_URL).openStream()))) {
+            JsonParser jsonParser = new JsonParser();
+            JsonObject jsonObject = jsonParser.parse(inputReader).getAsJsonObject();
+            JsonObject capeOwners = jsonObject.get("CapeOwners").getAsJsonObject();
+            for (Map.Entry<String, JsonElement> entry : capeOwners.entrySet()) {
+                Long snowflake = Long.parseLong(entry.getKey());
+                JsonObject value = entry.getValue().getAsJsonObject();
+                UUID uuid = UUID.fromString(value.get("UUID").getAsString());
+                String capes = value.get("CAPE").getAsString();
+                // Add snowflake/uuid/cape to a map or something
+                OWNERS.put(uuid, capes);
+                if (!TEXTURES.containsKey(capes)) TEXTURES.put((capes), new Cape(capes));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+        //List<Map<String, String>> capeOwners = new Gson().<Map<String, List<Map<String, String>>>>fromJson(new BufferedReader(new InputStreamReader(new URL(CAPE_OWNERS_URL).openStream())), new TypeToken<Map<String, List<Map<String, String>>>>() {}.getType()).get("CapeOwners");
+        //    capeOwners.forEach(s -> OWNERS.put(UUID.fromString(s.get("UUID")), s.get("CAPE")));
+        //    capeOwners.forEach(s -> {if (!TEXTURES.containsKey(s.get("CAPE"))) TEXTURES.put(s.get("CAPE"), new Cape(s.get("CAPE")));});
 
 
 

@@ -1,7 +1,6 @@
 package xyz.akiradev.oasiscosmetics.mixin;
 
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import xyz.akiradev.oasiscosmetics.client.render.Capes;
+import xyz.akiradev.oasiscosmetics.Utils.Capes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.MessageType;

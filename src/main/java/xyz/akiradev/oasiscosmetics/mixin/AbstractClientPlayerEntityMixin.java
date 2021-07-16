@@ -1,6 +1,6 @@
 package xyz.akiradev.oasiscosmetics.mixin;
 
-import xyz.akiradev.oasiscosmetics.client.render.Capes;
+import xyz.akiradev.oasiscosmetics.Utils.Capes;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
